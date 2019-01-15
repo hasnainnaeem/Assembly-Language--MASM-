@@ -1,0 +1,26 @@
+
+INCLUDE IRVINE32.inc
+
+.data
+source BYTE "Hahahha this is string to be copied",0
+destination BYTE sizeof source DUP(0)
+.code
+	Main Proc
+
+	mov ecx, sizeof source
+
+	loop1:
+		mov al, [source + ecx]
+		mov [destination+ ecx], al  
+	loop loop1
+
+	mov edx, offset source
+	call writestring
+	
+
+	exit
+
+main ENDP
+END main
+
+

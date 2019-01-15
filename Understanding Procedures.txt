@@ -1,0 +1,38 @@
+
+TITLE defining variables
+; just using variables
+Include irvine32.inc
+
+.data
+hexArray BYTE 1h, 2h, 3h, 4h, 5h, 6h
+.code
+
+Main Proc
+
+; Time Related Operations
+
+call getMSeconds
+mov ebx, eax
+mov eax, 1000
+call delay
+call getMSeconds
+sub eax, ebx
+call writeDec
+
+; Generating 10 random numbers
+mov ecx, 10
+call randomize
+loop1:
+mov eax, 100
+call randomRange
+call writeDec
+call crlf
+loop loop1
+
+
+EXIT
+Main ENDP
+
+End main
+
+

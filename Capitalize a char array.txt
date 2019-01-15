@@ -1,0 +1,29 @@
+INCLUDE IRVINE32.inc
+
+.data
+myArray BYTE 'a', 'b', 'c', 'd'
+
+.code
+
+Main proc
+mov esi, offset myArray
+mov ecx, sizeof myArray
+
+L1 :
+AND BYTE PTR [esi], 1011111b ; changing bit, in ascii code of character, at position 5 to 0 
+inc esi
+Loop L1
+
+mov ecx, sizeof myArray
+mov esi, offset myArray
+L2 :
+mov eax, [esi]
+call writeChar
+inc esi
+Loop L2
+
+
+exit
+Main ENDP
+END Main
+

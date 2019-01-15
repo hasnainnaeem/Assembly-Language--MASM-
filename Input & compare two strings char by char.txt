@@ -1,0 +1,118 @@
+; Input and compare two strings char by char in Assembly Language (MASM, Irvine Library)
+; Written by: Muhammad Hasnain Naeem
+; Dated 11/28/2018
+Include irvine32.inc
+
+.data
+str1 BYTE 10 DUP(0)
+str2 BYTE 10 DUP(0)
+
+inputMsg1 BYTE "Enter First String: ", 0
+inputMsg2 BYTE "Enter Second String: ", 0
+
+strNotEqMsg BYTE "Entered strings are not equal.", 0
+strEqMsg BYTE "Entered strings are equal.", 0
+.code
+
+Main Proc
+; Chaning colour of text
+mov eax, white + (black * 16)
+call setTextColor
+
+; taking input of str1
+mov edx, offset inputMsg1
+mov ecx, lengthof inputMsg1
+call writeString
+mov ecx, lengthof str1
+mov edx, offset str1
+call charInput
+
+; taking input of str2
+mov edx, offset inputMsg2
+mov ecx, lengthof inputMsg2
+call writeString
+mov ecx, lengthof str2
+mov edx, offset str2
+call charInput
+
+; printing both strings
+call crlf
+mov edx, offset str1
+mov ecx, lengthof str1
+call writeString
+call crlf
+mov edx, offset str2
+mov ecx, lengthof str2
+call writeString
+call crlf
+call crlf
+
+; comparing if both strings are equal
+mov edi, offset str1
+mov ecx, lengthof str1
+mov esi, offset str2
+mov eax, lengthof str2
+call compareStrings
+
+call crlf
+call crlf
+call waitMsg
+ret
+EXIT
+Main ENDP
+
+; Inputs char array
+CharInput PROC USES esi ecx edx eax
+mov esi, edx
+dec ecx
+loop1:
+call readChar
+call writeChar
+cmp eax, 0E08h
+jnz cont
+inc ecx
+jmp loop1
+cont :
+cmp eax, 01C0Dh
+jnz cont2
+call crlf
+ret
+cont2:
+mov[esi], al
+inc esi
+loop loop1
+call crlf
+ret
+CharInput ENDP
+
+; Compares two strings
+CompareStrings PROC USES esi edi ecx eax
+
+; checking length difference
+cmp ecx, eax
+jnz notEqual
+
+; else
+loop1:
+mov eax, [esi]
+cmp al, [edi]
+jnz notEqual
+inc esi
+inc edi
+loop loop1
+mov edx, offset strEqMsg
+mov ecx, lengthof strEqMsg
+call writeString
+call crlf
+ret
+
+notEqual:
+mov edx, offset strNotEqMsg
+mov ecx, offset strNotEqMsg
+call writeString
+call crlf
+ret
+CompareStrings ENDP
+End main
+
+

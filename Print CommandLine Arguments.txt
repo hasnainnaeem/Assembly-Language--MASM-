@@ -1,0 +1,16 @@
+INCLUDE IRVINE32.inc
+
+.data
+cmdTail BYTE "Hasnain Naeem", 0
+.code
+Main proc
+mov edx, offset cmdTail
+call getcommandtail
+
+call writeString
+
+
+exit
+Main ENDP
+END Main
+

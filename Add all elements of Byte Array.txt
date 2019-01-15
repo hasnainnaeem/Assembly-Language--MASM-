@@ -1,0 +1,26 @@
+
+INCLUDE IRVINE32.inc
+
+.data
+intArray BYTE 01h, 02h, 03h, 04h, 05h
+var1 DWORD 0
+.code
+	Main Proc
+
+	mov ecx, lengthof intarray
+	movzx eax, [intarray]
+
+	Loop1:
+		add al, [intArray + ecx]
+	loop Loop1
+	
+	call dumpregs
+
+
+
+	exit
+
+main ENDP
+END main
+
+

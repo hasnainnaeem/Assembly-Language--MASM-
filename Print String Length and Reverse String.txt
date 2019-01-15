@@ -1,0 +1,104 @@
+
+TITLE defining variables
+; just using variables
+Include irvine32.inc
+
+.data
+msg1 BYTE "Enter First Name: ", 0
+msg2 BYTE "Enter Last Name: ", 0
+msg3 BYTE "Number of characters: ", 0
+msg4 BYTE "Reversed String: ", 0
+
+nameArr BYTE 51 DUP(0)
+
+.code
+
+Main Proc
+
+mov edx, OFFSET msg1
+call doAll
+
+call crlf
+call crlf
+mov edx, OFFSET msg2
+call doAll
+Exit
+Main endp
+
+doAll PROC USES edx
+mov ecx, lengthof msg1
+call writeString
+
+
+call inputName
+call printLen
+call crlf
+call reverseStr
+ret
+doALL ENDP
+
+; Procedure to reverse a string
+reverseStr PROC
+; Printing message
+mov ecx, lengthof msg4
+mov edx, OFFSET msg4
+call writeString
+
+; pushing all characters on stack  
+inc eax
+mov ecx, eax
+mov esi, OFFSET nameArr
+
+mov ebx, 0
+L1:
+mov bl, [esi]
+push ebx
+inc esi
+LOOP L1
+pop ebx
+dec eax
+
+; Popping characters from stack in reverse order
+mov ecx, eax
+mov esi, OFFSET nameArr
+L2:
+pop ebx
+mov[esi], ebx
+inc esi
+LOOP L2
+
+mov ebx, 0
+mov[esi], ebx
+
+; Printing reveresed string
+mov edx, offset nameArr
+call writeString
+call crlf
+
+ret
+
+reverseStr ENDP
+
+
+
+printLen PROC
+
+mov ecx, lengthof msg3
+mov edx, OFFSET msg3
+call writeString
+
+call writeDec
+call crlf
+ret
+printLen ENDP
+
+; Procedure to input name
+inputName PROC
+mov ecx, lengthof nameArr
+mov edx, OFFSET nameArr
+call readString
+ret
+inputName ENDP
+
+End main
+

@@ -1,0 +1,43 @@
+INCLUDE IRVINE32.inc
+
+.data
+message BYTE "This is a test line.", 0
+counter DWORD 0
+.code
+Main proc
+
+mov ecx, sizeof message
+mov esi, offset message
+mov eax, 0
+add eax, 1; make ZF = 0
+call dumpregs
+call readChar
+L1:
+call writeChar
+call readChar
+cmp al, '0'
+pushf
+mov[esi], al
+inc esi
+inc counter
+popf
+Loopnz L1
+dec counter; termination character was entered
+call crlf
+mov ecx, counter
+mov eax, offset message
+L2:
+push eax
+mov eax, [eax]
+call writeChar
+pop eax
+inc eax
+Loop L2
+
+
+
+
+exit
+Main ENDP
+END Main
+

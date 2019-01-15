@@ -1,0 +1,113 @@
+
+TITLE defining variables
+; just using variables
+Include irvine32.inc
+
+.data
+msg1 BYTE "Enter Number: ", 0
+msg2 BYTE "Grade: ", 0
+howManyMsg BYTE "How many grades do you want to check?", 0
+howMany DWORD 0
+greatNumMsg BYTE "Number should not be greater than 100.", 0
+smallNumMsg BYTE "Number should not be smaller than 0.", 0
+number DWORD 0
+
+nameArr BYTE 51 DUP(0)
+
+.code
+
+Main Proc
+
+mov edx, OFFSET howManyMsg
+mov ecx, lengthof howManyMsg
+call writeString
+call crlf
+call readInt
+mov howMany, eax
+Start:
+mov edx, OFFSET msg1
+mov ecx, lengthof msg1
+call writeString
+
+call readInt
+mov number, eax
+
+mov eax, 101
+cmp eax, number
+jg Continue
+
+; Print error msg if number > 100
+mov ecx, lengthof greatNumMsg
+mov edx, OFFSET greatNumMsg
+call writeString
+jmp WrongInput
+
+Continue:
+mov eax, 0
+cmp number, eax
+jns Continue2
+
+; Print error msg if number < 0
+mov ecx, lengthof smallNumMsg
+mov edx, OFFSET smallNumMsg
+call writeString
+jmp WrongInput
+
+; Lets begin real game
+
+Continue2:
+; ---- Case 1 -----
+mov eax, 89
+cmp number, eax
+jna Case2
+
+mov eax, "A"
+call writeChar
+jmp EXITPRO
+
+Case2:
+mov eax, 79
+cmp number, eax
+jna Case3
+
+mov eax, "B"
+call writeChar
+jmp EXITPRO
+
+Case3 :
+mov eax, 69
+cmp number, eax
+jna Case4
+
+mov eax, "C"
+call writeChar
+jmp EXITPRO
+
+Case4 :
+mov eax, 59
+cmp number, eax
+jna Case5
+
+mov eax, "D"
+call writeChar
+jmp EXITPRO
+
+Case5 :
+mov eax, "F"
+call writeChar
+jmp EXITPRO
+
+EXITPRO:
+dec howMany
+WrongInput:
+call crlf
+mov eax, 0
+cmp eax, howMany
+jne Start
+
+EXIT
+Main ENDP
+
+End main
+
+
